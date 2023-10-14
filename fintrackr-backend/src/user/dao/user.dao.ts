@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { from, map, Observable } from 'rxjs';
 import { CreateUserDto } from '../dto/create-user';
 import { User } from '../schemas/user';
+import { CreateExpenseDto } from '../dto/create-expense';
 
 @Injectable()
 export class UserDao {
@@ -12,6 +13,10 @@ export class UserDao {
     private readonly _userModel: Model<User>,
   ) {}
 
+  findAll(): Observable<User[]> {
+    return from(this._userModel.find().lean().exec());
+  }
+
   findById = (id: string): Observable<User> =>
     from(this._userModel.findById(id)).pipe(
       map((user) => (user ? user.toObject() : null)),
@@ -19,4 +24,30 @@ export class UserDao {
 
   save = (user: CreateUserDto): Observable<User> =>
     from(new this._userModel(user).save());
+
+  createUserWithExpenses(userDto: CreateUserDto): Observable<User> {
+    const user = new this._userModel({
+      username: userDto.username,
+      password: userDto.password,
+      balance: userDto.balance,
+      expenses: userDto.expenses || [],
+    });
+
+    return from(user.save());
+  }
+
+  addExpenseToUser(
+    userId: string,
+    expense: CreateExpenseDto,
+  ): Observable<User> {
+    return from(
+      this._userModel.findByIdAndUpdate(
+        userId,
+        {
+          $push: { expenses: expense },
+        },
+        { new: true },
+      ),
+    ).pipe(map((user) => (user ? user.toObject() : null)));
+  }
 }

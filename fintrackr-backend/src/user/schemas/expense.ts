@@ -15,12 +15,6 @@ export class Expense {
   _id: any;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-  })
-  userId: any;
-
-  @Prop({
     type: Number,
     required: true,
   })

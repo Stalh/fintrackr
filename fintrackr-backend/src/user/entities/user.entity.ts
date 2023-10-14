@@ -1,6 +1,7 @@
 import { Exclude, Expose, Type } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../schemas/user';
+import { ExpenseEntity } from './expense.entity';
 
 @Exclude()
 export class UserEntity {
@@ -31,12 +32,18 @@ export class UserEntity {
   @Type(() => Number)
   balance: number;
 
-  /**
-   * Class constructor
-   *
-   * @param partial data to insert in object instance
-   */
+  @ApiProperty({
+    name: 'expenses',
+    description: 'List of user expenses',
+    type: ExpenseEntity,
+    isArray: true,
+  })
+  @Expose()
+  @Type(() => ExpenseEntity)
+  expenses: ExpenseEntity[];
+
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);
+    this.expenses = partial.expenses?.map((exp) => new ExpenseEntity(exp));
   }
 }

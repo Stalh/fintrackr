@@ -9,6 +9,7 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 import { CreateUserDto } from './dto/create-user';
 import { UserEntity } from './entities/user.entity';
 import { UserDao } from './dao/user.dao';
+import { CreateExpenseDto } from './dto/create-expense';
 
 @Injectable()
 export class UserService {
@@ -19,8 +20,8 @@ export class UserService {
    */
   constructor(private readonly _userDao: UserDao) {}
 
-  findOne = (id: string): Observable<UserEntity> =>
-    this._userDao.findById(id).pipe(
+  findOne(id: string): Observable<UserEntity> {
+    return this._userDao.findById(id).pipe(
       catchError((e) =>
         throwError(() => new UnprocessableEntityException(e.message)),
       ),
@@ -32,21 +33,47 @@ export class UserService {
             ),
       ),
     );
+  }
 
-  create = (user: CreateUserDto): Observable<UserEntity> =>
-    this._userDao.save(user).pipe(
+  create(userDto: CreateUserDto): Observable<UserEntity> {
+    return this._userDao.createUserWithExpenses(userDto).pipe(
       catchError((e) =>
         e.code === 11000
           ? throwError(
               () =>
                 new ConflictException(
-                  `User with username '${user.username}' already exists`,
+                  `User with username '${userDto.username}' already exists`,
                 ),
             )
           : throwError(() => new UnprocessableEntityException(e.message)),
       ),
       map((userCreated) => new UserEntity(userCreated)),
     );
+  }
+
+  findAll(): Observable<UserEntity[]> {
+    return this._userDao
+      .findAll()
+      .pipe(map((users) => users.map((user) => new UserEntity(user))));
+  }
+
+  addExpense(
+    userId: string,
+    expenseDto: CreateExpenseDto,
+  ): Observable<UserEntity> {
+    return this._userDao.addExpenseToUser(userId, expenseDto).pipe(
+      catchError((e) =>
+        throwError(() => new UnprocessableEntityException(e.message)),
+      ),
+      mergeMap((user) =>
+        !!user
+          ? of(new UserEntity(user))
+          : throwError(
+              () => new NotFoundException(`User with id '${userId}' not found`),
+            ),
+      ),
+    );
+  }
 
   // ... other CRUD operations can be added similarly
 }

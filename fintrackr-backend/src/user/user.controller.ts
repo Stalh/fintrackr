@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Param, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user';
 import { UserEntity } from './entities/user.entity';
 import { Observable } from 'rxjs';
 import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateUserDto } from './dto/update-user';
+import { UpdateExpenseDto } from './dto/update-depense';
 
 @Controller('users')
 export class UserController {
@@ -38,7 +39,23 @@ export class UserController {
     @Param('id') userId: string,
     @Body() udatedUserDto : UpdateUserDto
   ){
-    this.updateUser(userId, udatedUserDto);
+    this.userService.updateUser(userId, udatedUserDto);
+  }
+
+  @Put(':idUser/update_expense/:idExpense')
+  async updateUserExpense(
+    @Param('idUser') userId: string,
+    @Param(':idExpense') expenseId: string,
+    @Body() udatedExpenseDto : UpdateExpenseDto
+  ){
+    this.userService.updateUserExpense(userId, expenseId,udatedExpenseDto);
   }
   
+  @Delete(':idUser/update_expense/:idExpense')
+  async deleteUserExpense(
+    @Param('idUser') userId: string,
+    @Param(':idExpense') expenseId: string,
+  ){
+    this.userService.deleteUserExpense(userId, expenseId);
+  }
 }

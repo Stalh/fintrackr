@@ -8,11 +8,11 @@ import {
   export class UpdateUserDto {
     @IsOptional()
     @IsString()
-    username: string;
+    username?: string;
   
     @IsOptional()
     @IsString()
-    password: string;
+    password?: string;
   
     @IsOptional()
     @IsNumber()

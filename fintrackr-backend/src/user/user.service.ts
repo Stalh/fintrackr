@@ -10,6 +10,8 @@ import { CreateUserDto } from './dto/create-user';
 import { UserEntity } from './entities/user.entity';
 import { UserDao } from './dao/user.dao';
 import { CreateExpenseDto } from './dto/create-expense';
+import { UpdateExpenseDto } from './dto/update-depense';
+import { UpdateUserDto } from './dto/update-user';
 
 @Injectable()
 export class UserService {
@@ -74,6 +76,28 @@ export class UserService {
       ),
     );
   }
+  
+  async updateUserExpense(
+    userId: string,
+    expenseId: string,
+    udatedExpenseDto : UpdateExpenseDto
+  ){
+    this._userDao.updateUserExpense(userId, expenseId,udatedExpenseDto);
+  }
 
-  // ... other CRUD operations can be added similarly
+  updateUser(
+    userId: string,
+    udatedUserDto : UpdateUserDto
+  ){
+    this._userDao.updateUser(userId, udatedUserDto);
+  }
+  
+  async deleteUserExpense(
+    userId: string,
+    expenseId: string,
+   
+  ){
+    this._userDao.deleteUserExpense(userId, expenseId);
+  }
+
 }

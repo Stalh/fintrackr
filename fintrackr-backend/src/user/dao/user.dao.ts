@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, map, Observable } from 'rxjs';
 import { CreateUserDto } from '../dto/create-user';
 import { User } from '../schemas/user';
 import { CreateExpenseDto } from '../dto/create-expense';
+import { UpdateUserDto } from '../dto/update-user';
 
 @Injectable()
 export class UserDao {
@@ -49,5 +50,21 @@ export class UserDao {
         { new: true },
       ),
     ).pipe(map((user) => (user ? user.toObject() : null)));
+  }
+
+  updateUser(
+      userId : string,
+      userUpdated : UpdateUserDto
+    ){
+      const user = this._userModel.findById(userId);
+      if(!user){
+        throw new NotFoundException('User not found');
+      }
+      else{
+        this._userModel.findByIdAndUpdate(
+          userId,
+          userUpdated
+        );
+      }
   }
 }

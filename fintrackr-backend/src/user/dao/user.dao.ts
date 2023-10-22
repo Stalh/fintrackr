@@ -13,7 +13,7 @@ export class UserDao {
   constructor(
     @InjectModel(User.name)
     private readonly _userModel: Model<User>,
-  ) {}
+  ) { }
 
   findAll(): Observable<User[]> {
     return from(this._userModel.find().lean().exec());
@@ -53,49 +53,45 @@ export class UserDao {
     ).pipe(map((user) => (user ? user.toObject() : null)));
   }
 
-  updateUser(
-      userId : string,
-      userUpdated : UpdateUserDto
-    ){
-      const user = this._userModel.findById(userId);
-      if(!user){
-        throw new NotFoundException('User not found');
-      }
-      else{
-        this._userModel.findByIdAndUpdate(
-          userId,
-          userUpdated
-        );
-      }
-  }
-  async updateUserExpense(
-    userId : string,
-    expenseId : string,
-    updatedExpense : UpdateExpenseDto
-  ){
-    const user =  this._userModel.findById(userId);
+  async updateUser(userId: string, userUpdated: UpdateUserDto): Promise<User> {
+    const user = await this._userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const expensePos = (await user).expenses.findIndex(expense => expense._id === expenseId);
+    return this._userModel.findByIdAndUpdate(userId, userUpdated, { new: true }).exec();
+  }
+
+  async updateUserExpense(
+    userId: string,
+    expenseId: string,
+    updatedExpense: UpdateExpenseDto,
+  ) {
+    const user = this._userModel.findById(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const expensePos = (await user).expenses.findIndex(
+      (expense) => expense._id === expenseId,
+    );
     if (expensePos === -1) {
       throw new NotFoundException('Expense not found');
     }
-    (await user).expenses[expensePos] = { ...(await user).expenses[expensePos], ...updatedExpense };
-     (await user).save();
+    (await user).expenses[expensePos] = {
+      ...(await user).expenses[expensePos],
+      ...updatedExpense,
+    };
+    (await user).save();
   }
-  
-  async deleteUserExpense(
-    userId : string,
-    expenseId : string
-  ){
-    const user =  this._userModel.findById(userId);
+
+  async deleteUserExpense(userId: string, expenseId: string) {
+    const user = this._userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    (await user).expenses = (await user).expenses.filter(expense => expense._id !== expenseId);
+    (await user).expenses = (await user).expenses.filter(
+      (expense) => expense._id !== expenseId,
+    );
 
-     (await user).save();
+    (await user).save();
   }
 }
-

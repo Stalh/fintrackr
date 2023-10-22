@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user';
 import { UserEntity } from './entities/user.entity';
@@ -9,7 +17,7 @@ import { UpdateExpenseDto } from './dto/update-depense';
 
 @Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) { }
 
   @Get()
   findAll(): Observable<UserEntity[]> {
@@ -35,27 +43,28 @@ export class UserController {
   }
 
   @Put(':id')
-  updateUser(
+  async updateUser(
     @Param('id') userId: string,
-    @Body() udatedUserDto : UpdateUserDto
-  ){
-    this.userService.updateUser(userId, udatedUserDto);
+    @Body() udatedUserDto: UpdateUserDto,
+  ): Promise<UserEntity> {
+    return this.userService.updateUser(userId, udatedUserDto);
   }
+
 
   @Put(':idUser/update_expense/:idExpense')
   async updateUserExpense(
     @Param('idUser') userId: string,
     @Param(':idExpense') expenseId: string,
-    @Body() udatedExpenseDto : UpdateExpenseDto
-  ){
-    this.userService.updateUserExpense(userId, expenseId,udatedExpenseDto);
+    @Body() udatedExpenseDto: UpdateExpenseDto,
+  ) {
+    this.userService.updateUserExpense(userId, expenseId, udatedExpenseDto);
   }
-  
+
   @Delete(':idUser/update_expense/:idExpense')
   async deleteUserExpense(
     @Param('idUser') userId: string,
     @Param(':idExpense') expenseId: string,
-  ){
+  ) {
     this.userService.deleteUserExpense(userId, expenseId);
   }
 }

@@ -20,7 +20,7 @@ export class UserService {
    *
    * @param {UserDao} _userDao instance of the DAO
    */
-  constructor(private readonly _userDao: UserDao) {}
+  constructor(private readonly _userDao: UserDao) { }
 
   findOne(id: string): Observable<UserEntity> {
     return this._userDao.findById(id).pipe(
@@ -31,8 +31,8 @@ export class UserService {
         !!user
           ? of(new UserEntity(user))
           : throwError(
-              () => new NotFoundException(`User with id '${id}' not found`),
-            ),
+            () => new NotFoundException(`User with id '${id}' not found`),
+          ),
       ),
     );
   }
@@ -42,11 +42,11 @@ export class UserService {
       catchError((e) =>
         e.code === 11000
           ? throwError(
-              () =>
-                new ConflictException(
-                  `User with username '${userDto.username}' already exists`,
-                ),
-            )
+            () =>
+              new ConflictException(
+                `User with username '${userDto.username}' already exists`,
+              ),
+          )
           : throwError(() => new UnprocessableEntityException(e.message)),
       ),
       map((userCreated) => new UserEntity(userCreated)),
@@ -71,33 +71,27 @@ export class UserService {
         !!user
           ? of(new UserEntity(user))
           : throwError(
-              () => new NotFoundException(`User with id '${userId}' not found`),
-            ),
+            () => new NotFoundException(`User with id '${userId}' not found`),
+          ),
       ),
     );
   }
-  
+
   async updateUserExpense(
     userId: string,
     expenseId: string,
-    udatedExpenseDto : UpdateExpenseDto
-  ){
-    this._userDao.updateUserExpense(userId, expenseId,udatedExpenseDto);
+    updatedExpenseDto: UpdateExpenseDto,
+  ) {
+    this._userDao.updateUserExpense(userId, expenseId, updatedExpenseDto);
   }
 
-  updateUser(
-    userId: string,
-    udatedUserDto : UpdateUserDto
-  ){
-    this._userDao.updateUser(userId, udatedUserDto);
+  async updateUser(userId: string, updatedUserDto: UpdateUserDto): Promise<UserEntity> {
+    const updatedUser = await this._userDao.updateUser(userId, updatedUserDto);
+    return new UserEntity(updatedUser);
   }
-  
-  async deleteUserExpense(
-    userId: string,
-    expenseId: string,
-   
-  ){
+
+
+  async deleteUserExpense(userId: string, expenseId: string) {
     this._userDao.deleteUserExpense(userId, expenseId);
   }
-
 }

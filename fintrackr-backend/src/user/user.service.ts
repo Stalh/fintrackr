@@ -81,9 +81,10 @@ export class UserService {
     userId: string,
     expenseId: string,
     updatedExpenseDto: UpdateExpenseDto,
-  ) {
-    this._userDao.updateUserExpense(userId, expenseId, updatedExpenseDto);
+  ): Promise<void> {
+    await this._userDao.updateUserExpense(userId, expenseId, updatedExpenseDto);
   }
+
 
   async updateUser(userId: string, updatedUserDto: UpdateUserDto): Promise<UserEntity> {
     const updatedUser = await this._userDao.updateUser(userId, updatedUserDto);
@@ -92,6 +93,7 @@ export class UserService {
 
 
   async deleteUserExpense(userId: string, expenseId: string) {
-    this._userDao.deleteUserExpense(userId, expenseId);
+    return this._userDao.deleteUserExpense(userId, expenseId);
   }
+
 }

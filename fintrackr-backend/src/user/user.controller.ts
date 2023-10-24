@@ -54,17 +54,19 @@ export class UserController {
   @Put(':idUser/update_expense/:idExpense')
   async updateUserExpense(
     @Param('idUser') userId: string,
-    @Param(':idExpense') expenseId: string,
-    @Body() udatedExpenseDto: UpdateExpenseDto,
-  ) {
-    this.userService.updateUserExpense(userId, expenseId, udatedExpenseDto);
+    @Param('idExpense') expenseId: string,
+    @Body() updatedExpenseDto: UpdateExpenseDto,
+  ): Promise<void> {
+    return this.userService.updateUserExpense(userId, expenseId, updatedExpenseDto);
   }
+
 
   @Delete(':idUser/update_expense/:idExpense')
   async deleteUserExpense(
     @Param('idUser') userId: string,
-    @Param(':idExpense') expenseId: string,
+    @Param('idExpense') expenseId: string,
   ) {
-    this.userService.deleteUserExpense(userId, expenseId);
+    return this.userService.deleteUserExpense(userId, expenseId);
   }
+
 }

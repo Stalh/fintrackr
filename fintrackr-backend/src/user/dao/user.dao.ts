@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { from, map, Observable } from 'rxjs';
+import { from, map, mergeMap, Observable } from 'rxjs';
 import { CreateUserDto } from '../dto/create-user';
 import { User } from '../schemas/user';
 import { CreateExpenseDto } from '../dto/create-expense';
@@ -38,20 +38,29 @@ export class UserDao {
     return from(user.save());
   }
 
-  addExpenseToUser(
-    userId: string,
-    expense: CreateExpenseDto,
-  ): Observable<User> {
+  addExpenseToUser(userId: string, expense: CreateExpenseDto): Observable<User> {
     return from(
-      this._userModel.findByIdAndUpdate(
-        userId,
-        {
-          $push: { expenses: expense },
-        },
-        { new: true },
-      ),
-    ).pipe(map((user) => (user ? user.toObject() : null)));
+      this._userModel.findById(userId)
+    ).pipe(
+      mergeMap(user => {
+        if (!user) throw new NotFoundException(`User with id '${userId}' not found`);
+
+        // Deduct the amount from the user's balance
+        const newBalance = user.balance - expense.amount;
+
+        // Check if the new balance is below 0
+        if (newBalance < 0) throw new UnprocessableEntityException("Insufficient balance to make this expense.");
+
+        user.balance = newBalance;
+
+        user.expenses.push(expense as any);
+
+        return from(user.save());
+      }),
+      map(savedUser => (savedUser ? savedUser.toObject() : null))
+    );
   }
+
 
   async updateUser(userId: string, userUpdated: UpdateUserDto): Promise<User> {
     const user = await this._userModel.findById(userId);
@@ -66,32 +75,46 @@ export class UserDao {
     expenseId: string,
     updatedExpense: UpdateExpenseDto,
   ) {
-    const user = this._userModel.findById(userId);
+    const user = await this._userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    const expensePos = (await user).expenses.findIndex(
-      (expense) => expense._id === expenseId,
-    );
-    if (expensePos === -1) {
+
+    // Utiliser un type casting pour contourner le contrôle strict de TypeScript
+    const expensesArray: any = user.expenses;
+    const expense = expensesArray.id(expenseId);
+    if (!expense) {
       throw new NotFoundException('Expense not found');
     }
-    (await user).expenses[expensePos] = {
-      ...(await user).expenses[expensePos],
-      ...updatedExpense,
-    };
-    (await user).save();
+
+    // Mettre à jour les propriétés de la dépense
+    if (updatedExpense.amount) expense.amount = updatedExpense.amount;
+    if (updatedExpense.date) expense.date = updatedExpense.date;
+    if (updatedExpense.description) expense.description = updatedExpense.description;
+
+    await user.save();
   }
 
   async deleteUserExpense(userId: string, expenseId: string) {
-    const user = this._userModel.findById(userId);
+    const user = await this._userModel.findById(userId);
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    (await user).expenses = (await user).expenses.filter(
-      (expense) => expense._id !== expenseId,
-    );
 
-    (await user).save();
+    const expenseToDelete = user.expenses.find(expense => expense._id.toString() === expenseId);
+    if (!expenseToDelete) {
+      throw new NotFoundException('Expense not found');
+    }
+
+    // Add back the amount of the expense to the user's balance
+    user.balance += expenseToDelete.amount;
+
+    // Remove the expense from the user's expenses array
+    user.expenses = user.expenses.filter(expense => expense._id.toString() !== expenseId);
+
+    await user.save();
   }
+
+
+
 }

@@ -13,6 +13,6 @@ import { ExpenseModule } from './expense.module';
   ],
   providers: [UserService, UserDao],
   controllers: [UserController],
-  exports: [UserService, UserDao], // si vous prévoyez de les utiliser en dehors de ce module
+  exports: [UserService, UserDao],
 })
-export class UserModule {}
+export class UserModule { }

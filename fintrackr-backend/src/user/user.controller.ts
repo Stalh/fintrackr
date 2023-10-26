@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateUserDto } from './dto/update-user';
 import { UpdateExpenseDto } from './dto/update-depense';
+import { Public } from 'src/auth/decorator/public.decorator';
 
 @Controller('users')
 export class UserController {
@@ -33,7 +34,6 @@ export class UserController {
   create(@Body() createUserDto: CreateUserDto): Observable<UserEntity> {
     return this.userService.create(createUserDto);
   }
-
   @Post(':id/add_expense')
   addExpense(
     @Param('id') userId: string,

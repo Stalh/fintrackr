@@ -15,6 +15,7 @@ import { UpdateUserDto } from './dto/update-user';
 
 @Injectable()
 export class UserService {
+
   /**
    * Class constructor
    *
@@ -94,6 +95,12 @@ export class UserService {
 
   async deleteUserExpense(userId: string, expenseId: string) {
     return this._userDao.deleteUserExpense(userId, expenseId);
+  }
+
+
+  async findByUsername(username: string): Promise<UserEntity> {
+    const user = await this._userDao.findByUsername(username).toPromise();
+    return user ? new UserEntity(user) : null;
   }
 
 }

@@ -32,6 +32,9 @@ export class UserEntity {
   @Type(() => Number)
   balance: number;
 
+  @Exclude()
+  password?: string;
+
   @ApiProperty({
     name: 'expenses',
     description: 'List of user expenses',

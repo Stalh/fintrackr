@@ -115,6 +115,13 @@ export class UserDao {
     await user.save();
   }
 
+  findByUsername(username: string): Observable<User> {
+    return from(this._userModel.findOne({ username: username })).pipe(
+      map((user) => (user ? user.toObject() : null))
+    );
+  }
+
+
 
 
 }

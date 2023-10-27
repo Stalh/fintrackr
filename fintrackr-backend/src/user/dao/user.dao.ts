@@ -7,6 +7,7 @@ import { User } from '../schemas/user';
 import { CreateExpenseDto } from '../dto/create-expense';
 import { UpdateUserDto } from '../dto/update-user';
 import { UpdateExpenseDto } from '../dto/update-depense';
+import { UserEntity } from '../entities/user.entity';
 
 @Injectable()
 export class UserDao {
@@ -121,7 +122,7 @@ export class UserDao {
     );
   }
 
-
+ 
 
 
 }

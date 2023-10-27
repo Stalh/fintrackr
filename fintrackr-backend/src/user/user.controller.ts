@@ -14,11 +14,12 @@ import { Observable } from 'rxjs';
 import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateUserDto } from './dto/update-user';
 import { UpdateExpenseDto } from './dto/update-depense';
-import { Public } from 'src/auth/decorator/public.decorator';
+import { Public,IS_PUBLIC_KEY } from 'src/auth/decorator/public.decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) { }
+
 
   @Get()
   findAll(): Observable<UserEntity[]> {
@@ -30,6 +31,7 @@ export class UserController {
     return this.userService.findOne(id);
   }
 
+  @Public()
   @Post()
   create(@Body() createUserDto: CreateUserDto): Observable<UserEntity> {
     return this.userService.create(createUserDto);
@@ -68,5 +70,10 @@ export class UserController {
   ) {
     return this.userService.deleteUserExpense(userId, expenseId);
   }
-
+  
+  @Public()
+  @Get(':username')
+  getUserByUsername(@Param('username') username: string): Promise<UserEntity> {
+    return this.userService.findByUsername(username);
+  }
 }

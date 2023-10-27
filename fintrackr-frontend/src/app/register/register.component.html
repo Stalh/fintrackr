@@ -1,1 +1,26 @@
-<p>register works!</p>
+<div class="h-screen flex bg-gray-100">
+    <div class="flex-1 flex justify-center items-center">
+        <div class="max-w-md w-full px-8 py-6 bg-white rounded shadow-md">
+            <h2 class="text-2xl font-bold mb-5 text-gray-900">Connexion</h2>
+
+            <form (ngSubmit)="checkUser()">
+                <div class="mb-4">
+                    <label for="username" class="font-medium text-gray-600 block mb-2">Nom d'utilisateur</label>
+                    <input type="text" [(ngModel)]="username" name="username" id="username"
+                        class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500"
+                        required>
+                </div>
+               
+                <button type="submit"
+                    class="w-full bg-blue-500 text-white rounded py-2 px-3 hover:bg-blue-600 focus:outline-none">Se
+                    connecter</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="hidden lg:block relative w-1/4">
+        <img class="absolute inset-0 w-full h-full object-contain" src="../../assets/login.png" alt="Login Image">
+    </div>
+
+
+</div>

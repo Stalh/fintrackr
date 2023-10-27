@@ -20,7 +20,11 @@ import { Public,IS_PUBLIC_KEY } from 'src/auth/decorator/public.decorator';
 export class UserController {
   constructor(private readonly userService: UserService) { }
 
-
+  @Public()
+  @Get(':username')
+  async getUserByUsername(@Param('username') username: string): Promise<UserEntity> {
+    return this.userService.findByUsername(username);
+  }
   @Get()
   findAll(): Observable<UserEntity[]> {
     return this.userService.findAll();
@@ -71,9 +75,5 @@ export class UserController {
     return this.userService.deleteUserExpense(userId, expenseId);
   }
   
-  @Public()
-  @Get(':username')
-  getUserByUsername(@Param('username') username: string): Promise<UserEntity> {
-    return this.userService.findByUsername(username);
-  }
+  
 }

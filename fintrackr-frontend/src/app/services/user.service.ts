@@ -11,11 +11,12 @@ export class UserService {
   private apiUrl = 'http://localhost:3000';
 
   constructor(private http: HttpClient) {
-    
-   }
-   
+
+  }
+
   getUser(username: string): Observable<User> {
-   
+    console.log(`Fetching user with username: ${username}`);
     return this.http.get<User>(`${this.apiUrl}/users/${username}`);
   }
+
 }

@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
 import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateUserDto } from './dto/update-user';
 import { UpdateExpenseDto } from './dto/update-depense';
-import { Public,IS_PUBLIC_KEY } from 'src/auth/decorator/public.decorator';
+import { Public, IS_PUBLIC_KEY } from 'src/auth/decorator/public.decorator';
 
 @Controller('users')
 export class UserController {
@@ -68,12 +68,11 @@ export class UserController {
 
 
   @Delete(':idUser/update_expense/:idExpense')
-  async deleteUserExpense(
-    @Param('idUser') userId: string,
-    @Param('idExpense') expenseId: string,
-  ) {
+  async deleteUserExpense(@Param('idUser') userId: string, @Param('idExpense') expenseId: string) {
+    console.log(`Received delete request for userId: ${userId} and expenseId: ${expenseId}`);
     return this.userService.deleteUserExpense(userId, expenseId);
   }
-  
-  
+
+
+
 }

@@ -1,20 +1,33 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
+    private readonly logger = new Logger(JwtStrategy.name);
+
     constructor(private readonly configService: ConfigService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: "YOUR-SECRET-KEY",
+            secretOrKey: configService.get<string>('JWT_SECRET'),
         });
+        this.logger.log('JWT Strategy initialized');
     }
 
     async validate(payload: any) {
-        // Vous pouvez ajouter une logique de validation supplémentaire ici si nécessaire
-        return { userId: payload.sub, username: payload.username };
+        this.logger.log('Validating JWT');
+
+        // Votre logique de validation actuelle
+        const user = { userId: payload.sub, username: payload.username };
+
+        if (!user) {
+            this.logger.error('JWT validation failed');
+            throw new UnauthorizedException();
+        }
+
+        this.logger.log('JWT is valid');
+        return user;
     }
 }

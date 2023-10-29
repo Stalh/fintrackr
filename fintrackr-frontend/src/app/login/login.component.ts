@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
-
-interface CustomJwtPayload {
-  username: string;
-  // autres champs du token
-}
 
 @Component({
   selector: 'app-login',
@@ -20,15 +14,16 @@ export class LoginComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   onLogin() {
-    this.authService.login(this.username, this.password).subscribe(
+    this.authService.loginApi(this.username, this.password).subscribe(
       (response: any) => {
         const jwtToken = response.access_token;
+        this.authService.login(this.username, jwtToken);
 
-        localStorage.setItem('jwt', jwtToken);
-        localStorage.setItem('username', this.username);
         console.log('Connexion réussie');
+        this.router.navigate(['/home']).then(() => {
+          window.location.reload();
+        });
 
-        this.router.navigate(['/home']);
       },
       (error) => {
         console.error('Erreur lors de la connexion:', error);
@@ -36,4 +31,3 @@ export class LoginComponent {
     );
   }
 }
-

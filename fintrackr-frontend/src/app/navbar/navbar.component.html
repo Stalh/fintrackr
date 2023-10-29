@@ -2,10 +2,14 @@
     <div class="container mx-auto">
         <div class="flex justify-between items-center">
             <a [routerLink]="['/']" class="text-2xl font-bold">FinTrackr</a>
-            <div class="space-x-4">
+            <div class="space-x-4" *ngIf="!isLoggedIn">
                 <a [routerLink]="['/']" class="hover:text-blue-300">Accueil</a>
                 <a [routerLink]="['/login']" class="hover:text-blue-300">Connexion</a>
                 <a [routerLink]="['/register']" class="hover:text-blue-300">Inscription</a>
+            </div>
+            <div class="space-x-4" *ngIf="isLoggedIn">
+                <span>Bonjour, {{ username }}</span>
+                <a (click)="logout()" class="hover:text-blue-300 cursor-pointer">Déconnexion</a>
             </div>
         </div>
     </div>

@@ -80,21 +80,23 @@ export class UserDao {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-
-    // Utiliser un type casting pour contourner le contrôle strict de TypeScript
     const expensesArray: any = user.expenses;
     const expense = expensesArray.id(expenseId);
     if (!expense) {
       throw new NotFoundException('Expense not found');
     }
 
-    // Mettre à jour les propriétés de la dépense
+    const amountDifference = updatedExpense.amount - expense.amount;
+
+    user.balance -= amountDifference;
+
     if (updatedExpense.amount) expense.amount = updatedExpense.amount;
     if (updatedExpense.date) expense.date = updatedExpense.date;
     if (updatedExpense.description) expense.description = updatedExpense.description;
 
     await user.save();
   }
+
 
   async deleteUserExpense(userId: string, expenseId: string) {
     const user = await this._userModel.findById(userId);
@@ -107,10 +109,7 @@ export class UserDao {
       throw new NotFoundException('Expense not found');
     }
 
-    // Add back the amount of the expense to the user's balance
     user.balance += expenseToDelete.amount;
-
-    // Remove the expense from the user's expenses array
     user.expenses = user.expenses.filter(expense => expense._id.toString() !== expenseId);
 
     await user.save();
@@ -122,7 +121,7 @@ export class UserDao {
     );
   }
 
- 
+
 
 
 }

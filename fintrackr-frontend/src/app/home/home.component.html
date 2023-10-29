@@ -1,9 +1,40 @@
 <div *ngIf="user" class="bg-gray-100 p-6 rounded-md shadow-md">
     <h2 class="text-2xl font-bold mb-4">Bienvenue {{ user.username }} !</h2>
 
+    <!-- Formulaire d'ajout de dépense -->
+    <div class="mb-6">
+        <h3 class="text-xl mb-3">Ajouter une nouvelle dépense :</h3>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
+                Description
+            </label>
+            <input type="text" [(ngModel)]="newExpenseDescription" name="description"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">
+                Montant
+            </label>
+            <input type="number" [(ngModel)]="newExpenseAmount" name="amount"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
+                Date
+            </label>
+            <input type="date" [(ngModel)]="newExpenseDate" name="date"
+                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <button (click)="onAddExpense()"
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+            Ajouter
+        </button>
+    </div>
+
     <h3 class="text-xl mb-3">Vos dépenses :</h3>
     <div *ngFor="let expense of user.expenses" class="mb-4">
-        <app-expense [expense]="expense" [userId]="user._id"></app-expense>
+        <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
+            (expenseUpdated)="onExpenseUpdated()"></app-expense>
     </div>
 
     <div class="balance text-lg font-semibold mt-6">

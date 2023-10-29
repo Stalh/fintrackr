@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -8,10 +8,12 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ExpenseComponent {
   @Input() expense: any;
+  @Input() userId: string = '';
+  @Output() expenseDeleted = new EventEmitter<void>();
   editing: boolean = false;
   editedDescription: string = '';
   editedAmount: number = 0;
-  @Input() userId: string = '';
+  @Output() expenseUpdated = new EventEmitter<void>();
 
 
   constructor(private http: HttpClient) { }
@@ -34,29 +36,24 @@ export class ExpenseComponent {
 
   updateExpense(data: any) {
     const apiUrl = 'http://localhost:3000';
-    this.http.put(`${apiUrl}/users/${this.expense.userId}/update_expense/${this.expense.id}`, data).subscribe(response => {
+    this.http.put(`${apiUrl}/users/${this.userId}/update_expense/${this.expense._id}`, data).subscribe(response => {
       console.log('Mise à jour réussie');
-      // Mettre à jour localement les données de la dépense
       this.expense.description = this.editedDescription;
       this.expense.amount = this.editedAmount;
+      this.expenseUpdated.emit();
     }, error => {
       console.error('Erreur lors de la mise à jour de la dépense :', error);
     });
+
   }
 
   deleteExpense() {
     const apiUrl = 'http://localhost:3000';
-    const userId = this.userId;
-    const expenseId = this.expense._id;
-    console.log('UserID:', this.expense.userId);
-    console.log('ExpenseID:', this.expense.id);
-
-
-    this.http.delete(`${apiUrl}/users/${userId}/update_expense/${expenseId}`)
+    this.http.delete(`${apiUrl}/users/${this.userId}/update_expense/${this.expense._id}`)
       .subscribe(response => {
         console.log('Suppression réussie:', response);
+        this.expenseDeleted.emit();
       }, error => {
-        // Gérez l'erreur
         console.error('Erreur lors de la suppression de la dépense:', error);
       });
   }

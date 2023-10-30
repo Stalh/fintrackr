@@ -1,35 +1,27 @@
-<div class="h-screen flex bg-gray-100">
-    <div class="flex-1 flex justify-center items-center">
-        <div class="max-w-md w-full px-8 py-6 bg-white rounded shadow-md">
-            <h2 class="text-2xl font-bold mb-5 text-gray-900">Connexion</h2>
-
-            <form (ngSubmit)="onLogin()">
-                <div class="mb-4">
-                    <label for="username" class="font-medium text-gray-600 block mb-2">Nom d'utilisateur</label>
-                    <input type="text" [(ngModel)]="username" name="username" id="username"
-                        class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500"
-                        required>
-                </div>
-                <div class="mb-4">
-                    <label for="password" class="font-medium text-gray-600 block mb-2">Mot de passe</label>
-                    <input type="password" [(ngModel)]="password" name="password" id="password"
-                        class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500"
-                        required>
-                </div>
-                <button type="submit"
-                    class="w-full bg-blue-500 text-white rounded py-2 px-3 hover:bg-blue-600 focus:outline-none">Se
-                    connecter</button>
-                <div *ngIf="loginError" class="mb-4 text-red-600">
-                    Nom d'utilisateur ou mot de passe incorrect !
-                </div>
-
-            </form>
-        </div>
+<div class="height-adjusted flex bg-old_lace-500">
+    <div class="flex-1 flex flex-col justify-center items-center px-20 ml-32 space-y-10">
+        <h2 class="text-5xl font-extrabold mb-10 text-midnight_green-500">Connexion</h2>
+        <form (ngSubmit)="onLogin()" class="w-full max-w-lg">
+            <div class="mb-8 relative">
+                <input type="text" [(ngModel)]="username" name="username" id="username" placeholder="Nom d'utilisateur"
+                    class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+                    required>
+            </div>
+            <div class="mb-10 relative">
+                <input type="password" [(ngModel)]="password" name="password" id="password" placeholder="Mot de passe"
+                    class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+                    required>
+            </div>
+            <button type="submit"
+                class="w-full bg-zomp-500 text-white rounded-xl py-3 px-4 hover:bg-zomp-600 focus:outline-none transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">Se
+                connecter</button>
+            <div *ngIf="loginError" class="mt-6 text-red-600">
+                Nom d'utilisateur ou mot de passe incorrect !
+            </div>
+        </form>
     </div>
 
-    <div class="hidden lg:block relative w-1/4">
-        <img class="absolute inset-0 w-full h-full object-contain" src="../../assets/login.png" alt="Login Image">
+    <div class="hidden lg:flex lg:flex-col lg:justify-center lg:items-end lg:w-3/5 pr-16">
+        <img class="w-full h-auto object-cover rounded-xl" src="../../assets/test.png" alt="Login Image">
     </div>
-
-
 </div>

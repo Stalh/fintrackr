@@ -1,15 +1,22 @@
-<nav class="bg-blue-500 p-4 text-white">
+<nav class="bg-zomp-600 p-4 text-midnight_green">
     <div class="container mx-auto">
         <div class="flex justify-between items-center">
-            <a [routerLink]="['/']" class="text-2xl font-bold">FinTrackr</a>
+            <a [routerLink]="['/']" class="flex items-center space-x-2">
+                <img src="../../assets/logo.png" alt="FinTrackr Icon" class="h-10 w-10">
+                <span class="text-2xl font-bold">FinTrackr</span>
+            </a>
             <div class="space-x-4" *ngIf="!isLoggedIn">
-                <a [routerLink]="['/']" class="hover:text-blue-300">Accueil</a>
-                <a [routerLink]="['/login']" class="hover:text-blue-300">Connexion</a>
-                <a [routerLink]="['/register']" class="hover:text-blue-300">Inscription</a>
+                <a [routerLink]="['/']"
+                    class="px-2 py-1 border border-transparent hover:border-midnight_green hover:bg-midnight_green hover:text-old_lace rounded">Accueil</a>
+                <a [routerLink]="['/login']"
+                    class="px-2 py-1 border border-transparent hover:border-midnight_green hover:bg-midnight_green hover:text-old_lace rounded">Connexion</a>
+                <a [routerLink]="['/register']"
+                    class="px-2 py-1 border border-transparent hover:border-midnight_green hover:bg-midnight_green hover:text-old_lace rounded">Inscription</a>
             </div>
             <div class="space-x-4" *ngIf="isLoggedIn">
                 <span>Bonjour, {{ username }}</span>
-                <a (click)="logout()" class="hover:text-blue-300 cursor-pointer">Déconnexion</a>
+                <a (click)="logout()"
+                    class="px-2 py-1 border border-transparent hover:border-midnight_green hover:bg-midnight_green hover:text-old_lace rounded cursor-pointer">Déconnexion</a>
             </div>
         </div>
     </div>

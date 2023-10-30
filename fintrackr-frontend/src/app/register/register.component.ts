@@ -2,46 +2,85 @@ import { Component } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: []
 })
 export class RegisterComponent {
-  username!: string;
-  constructor(private userService : UserService,private _snackBar: MatSnackBar){
+  userForm: FormGroup;
 
-  }
-  comfirmPWD = ''
-  user: User = {
-    username: '',
-    password: '',
-    balance: 0,
-    expenses : []
-  };
   
-  register(){
-   
-      this.userService.addUser(this.user).subscribe(
-        ()=>{
-          this._snackBar.open('Votre compte a été bien créé', 'Fermer', {
+constructor(private fb: FormBuilder, private userService: UserService, private snackBar: MatSnackBar) {
+  this.userForm = this.fb.group({
+    username: ['', Validators.required],
+    password: ['', [Validators.required, Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)]],
+    confirmPassword: ['', Validators.required],
+    balance: [0, Validators.required],
+  });
+}
+
+  
+  register() {
+    if (this.checkPWD()) {
+      let user :User  = {
+        username: this.userForm.get('username')!.value,
+        password: this.userForm.get('password')!.value,
+        balance: this.userForm.get('balance')!.value,
+        expenses : []
+      } 
+      const userData = this.userForm.value;
+
+      this.userService.addUser(userData).subscribe(
+        (response) => {
+          this.snackBar.open('Inscription réussie!', 'Fermer', {
             duration: 3000,
           });
-        },(error) => {
+
+          this.userForm.reset();
+        },
+        (error) => {
           if (error.status === 409) {
-            this._snackBar.open("Il existe déjà un compte avec ce Nom d'utilisteur", 'Fermer', {
+            this.snackBar.open('Conflit: L\'utilisateur existe déjà.', 'Fermer', {
+              duration: 3000,
+            });
+          } else {
+            this.snackBar.open('Une erreur est survenue. Veuillez réessayer plus tard.', 'Fermer', {
               duration: 3000,
             });
           }
         }
-      )
-    
-    
+      );
+    } else {
+      this.snackBar.open('Les mots de passe ne correspondent pas.', 'Fermer', {
+        duration: 3000,
+      });
+    }
+  }
+  isUsernameDirty(): boolean {
+    return this.userForm.get('username')!.dirty;
   }
 
-  checkPWD(){
-    if( this.user.password === this.comfirmPWD) return true
-    return false
+  isPasswordDirty(): boolean {
+    return this.userForm.get('password')!.dirty;
   }
+
+  isConfirmPasswordDirty(): boolean {
+    return this.userForm.get('confirmPassword')!.dirty;
+  }
+
+  isBalanceDirty(): boolean {
+    return this.userForm.get('balance')!.dirty;
+  }
+
+  isFormValid(): boolean {
+    return this.userForm.valid;
+  }
+  checkPWD(): boolean {
+    return this.userForm.get('password')!.value === this.userForm.get('confirmPassword')!.value;
+  }
+
+
 
 }

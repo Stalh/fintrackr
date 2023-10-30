@@ -1,46 +1,75 @@
-<div *ngIf="user" class="bg-gray-100 p-6 rounded-md shadow-md">
-    <h2 class="text-2xl font-bold mb-4">Bienvenue {{ user.username }} !</h2>
+<div *ngIf="user" class="bg-old_lace p-6 rounded-md shadow-md text-midnight_green-500 space-y-6">
 
-    <!-- Formulaire d'ajout de dépense -->
-    <div class="mb-6">
-        <h3 class="text-xl mb-3">Ajouter une nouvelle dépense :</h3>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
-                Description
-            </label>
-            <input type="text" [(ngModel)]="newExpenseDescription" name="description"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    <!-- En-tête avec le nom d'utilisateur et le solde -->
+    <div class="flex justify-between items-center mb-4 space-x-4">
+        <h2 class="text-3xl font-bold">Bienvenue {{ user.username }} !</h2>
+        <div class="balance text-lg font-semibold px-4 py-2 bg-old_lace text-midnight_green-500 rounded-full">
+            Solde: <span>{{ user.balance | currency }}</span>
         </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">
-                Montant
-            </label>
-            <input type="number" [(ngModel)]="newExpenseAmount" name="amount"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="date">
-                Date
-            </label>
-            <input type="date" [(ngModel)]="newExpenseDate" name="date"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-        </div>
-        <div *ngIf="invalidAmount" class="mb-4 text-red-600">
-            Montant invalide. Veuillez entrer un nombre positif ne dépassant pas votre solde.
-        </div>
-        <button (click)="onAddExpense()"
-            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Ajouter
-        </button>
     </div>
 
+    <!-- Bouton pour afficher la modal -->
+    <button (click)="showModal = true"
+        class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
+        Ajouter une dépense
+    </button>
+
+    <!-- Liste des dépenses -->
     <h3 class="text-xl mb-3">Vos dépenses :</h3>
     <div *ngFor="let expense of user.expenses" class="mb-4">
         <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
             (expenseUpdated)="onExpenseUpdated()"></app-expense>
     </div>
 
-    <div class="balance text-lg font-semibold mt-6">
-        Solde: <span class="text-green-500">{{ user.balance | currency }}</span>
+    <!-- Modal pour ajouter une dépense -->
+    <div *ngIf="showModal"
+        class="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-opacity-50 bg-black">
+        <div class="bg-midnight_green-300 p-6 rounded-lg shadow-md space-y-4 w-3/4 max-w-xl">
+            <h3 class="text-2xl font-bold text-old_lace mb-4">Ajouter une dépense</h3>
+            <form class="space-y-4" (ngSubmit)="onAddExpense()">
+                <!-- Description -->
+                <div class="mb-4">
+                    <label for="modalDescription" class="block text-old_lace text-sm font-medium mb-2">
+                        Description
+                    </label>
+                    <input type="text" [(ngModel)]="newExpenseDescription" id="modalDescription" name="description"
+                        placeholder="Description"
+                        class="border rounded w-full py-2 px-3 bg-midnight_green-200 text-old_lace focus:outline-none focus:border-zomp-500">
+                </div>
+
+                <!-- Montant -->
+                <div class="mb-4">
+                    <label for="modalAmount" class="block text-old_lace text-sm font-medium mb-2">
+                        Montant
+                    </label>
+                    <input type="number" [(ngModel)]="newExpenseAmount" id="modalAmount" placeholder="Montant"
+                        name="amount"
+                        class="border rounded w-full py-2 px-3 bg-midnight_green-200 text-old_lace focus:outline-none focus:border-zomp-500">
+                </div>
+
+                <!-- Date -->
+                <div class="mb-4">
+                    <label for="modalDate" class="block text-old_lace text-sm font-medium mb-2">
+                        Date
+                    </label>
+                    <input type="date" [(ngModel)]="newExpenseDate" id="modalDate" name="date"
+                        class="border rounded w-full py-2 px-3 bg-midnight_green-200 text-old_lace focus:outline-none focus:border-zomp-500">
+                </div>
+
+                <!-- Erreur pour le montant -->
+                <div *ngIf="invalidAmount" class="mb-4 text-red-600">
+                    Montant invalide. Veuillez entrer un montant positif.
+                </div>
+
+                <button type="submit"
+                    class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
+                    Ajouter
+                </button>
+            </form>
+            <button (click)="showModal = false"
+                class="bg-ash_gray-500 hover:bg-ash_gray-600 text-old_lace px-4 py-2 rounded-lg font-bold transition duration-300 ease-in-out shadow-md">
+                Fermer
+            </button>
+        </div>
     </div>
 </div>

@@ -18,6 +18,8 @@ export class HomeComponent implements OnInit {
   newExpenseAmount: number = 0;
   newExpenseDate: Date = new Date();
   invalidAmount: boolean = false;
+  showModal: boolean = false;
+
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -40,9 +42,10 @@ export class HomeComponent implements OnInit {
   }
 
   onAddExpense(): void {
+    console.log('Montant:', this.newExpenseAmount);
     this.invalidAmount = false;
 
-    if (this.newExpenseAmount <= 0 || this.newExpenseAmount > this.user.balance) {
+    if (this.newExpenseAmount <= 0) {
       this.invalidAmount = true;
       return;
     }

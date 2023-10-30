@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class LoginComponent {
   username!: string;
   password!: string;
+  loginError: boolean = false;  // Ajoutez cette ligne
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -23,10 +24,10 @@ export class LoginComponent {
         this.router.navigate(['/home']).then(() => {
           window.location.reload();
         });
-
       },
       (error) => {
         console.error('Erreur lors de la connexion:', error);
+        this.loginError = true;
       }
     );
   }

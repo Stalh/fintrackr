@@ -38,5 +38,8 @@
     <div class="flex space-x-4">
         <button (click)="onSubmitEdit()" class="bg-blue-600 text-white p-2 rounded-md">Confirmer</button>
         <button (click)="editing=false" class="bg-red-600 text-white p-2 rounded-md">Annuler</button>
+        <div *ngIf="invalidAmount" class="mb-4 text-red-600">
+            Montant invalide. Veuillez entrer un montant positif.
+        </div>
     </div>
 </div>

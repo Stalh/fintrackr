@@ -19,7 +19,7 @@ export class JwtInterceptor implements HttpInterceptor {
                     Authorization: `Bearer ${jwtToken}`
                 }
             });
-            console.log('Token attached to request:', jwtToken);
+         
         } else {
             console.warn('No JWT token found in localStorage.');
         }

@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
+import { Expense } from '../models/expense.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +13,16 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getUser(username: string): Observable<User> {
-    console.log(`Fetching user with username: ${username}`);
-    return this.http.get<User>(`${this.apiUrl}/users/${username}`);
-  }
 
-  addExpense(userId: string, expenseData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/users/${userId}/add_expense`, expenseData);
+
+  addExpense(userId: string, expenseData: any): Observable<Expense> {
+    return this.http.post<Expense>(`${this.apiUrl}/users/${userId}/add_expense`, expenseData);
   }
 
   refreshUserData(username: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/users/${username}`);
   }
-
+  addUser(user : User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/users/`,user);
+  }
 }

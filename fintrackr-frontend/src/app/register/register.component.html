@@ -1,26 +1,43 @@
+
 <div class="h-screen flex bg-gray-100">
     <div class="flex-1 flex justify-center items-center">
-        <div class="max-w-md w-full px-8 py-6 bg-white rounded shadow-md">
-            <h2 class="text-2xl font-bold mb-5 text-gray-900">Connexion</h2>
+      <div class="max-w-md w-full px-8 py-6 bg-white rounded shadow-md">
+        <h2 class="text-2xl font-bold mb-5 text-gray-900">Inscription</h2>
+  
+        <form (ngSubmit)="register()">
+          <div class="mb-4">
+            <label for="username" class="font-medium text-gray-600 block mb-2">Nom d'utilisateur</label>
+            <input type="text" [(ngModel)]="user.username" name="username" id="username"
+              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
+            
+          </div>
+  
+          <div class="mb-4">
+            <label for="password" class="font-medium text-gray-600 block mb-2">Mot de passe</label>
+            <input type="password" [(ngModel)]="comfirmPWD" name="password" id="password"
+              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
+          </div>
 
-            <form (ngSubmit)="checkUser()">
-                <div class="mb-4">
-                    <label for="username" class="font-medium text-gray-600 block mb-2">Nom d'utilisateur</label>
-                    <input type="text" [(ngModel)]="username" name="username" id="username"
-                        class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500"
-                        required>
-                </div>
-               
-                <button type="submit"
-                    class="w-full bg-blue-500 text-white rounded py-2 px-3 hover:bg-blue-600 focus:outline-none">Se
-                    connecter</button>
-            </form>
-        </div>
+          <div class="mb-4">
+            <label for="password" class="font-medium text-gray-600 block mb-2">Comfirmer le mot de passe</label>
+            <input type="password" [(ngModel)]="user.password" name="password" id="password"
+              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
+              <small style="color: red;" *ngIf="!checkPWD()">Les mots de passe ne correspondent pas.</small>
+          </div>
+          <div class="mb-4">
+            <label for="balance" class="font-medium text-gray-600 block mb-2">Balance</label>
+            <input type="number" [(ngModel)]="user.balance" name="balance" id="balance"
+              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
+          </div>
+  
+          <button type="submit"
+            class="w-full bg-blue-500 text-white rounded py-2 px-3 hover:bg-blue-600 focus:outline-none">S'inscrire</button>
+        </form>
+      </div>
     </div>
-
+  
     <div class="hidden lg:block relative w-1/4">
-        <img class="absolute inset-0 w-full h-full object-contain" src="../../assets/login.png" alt="Login Image">
+      <img class="absolute inset-0 w-full h-full object-contain" src="../../assets/login.png" alt="Login Image">
     </div>
-
-
-</div>
+  </div>
+  

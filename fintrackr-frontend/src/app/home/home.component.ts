@@ -29,7 +29,6 @@ export class HomeComponent implements OnInit {
     if (username) {
       const apiUrl = 'http://localhost:3000';
       this.http.get(`${apiUrl}/users/${username}`).subscribe(data => {
-        console.log(`Received user data:`, data);
         this.user = data;
       }, error => {
         console.error('Erreur lors de la récupération des informations utilisateur :', error);

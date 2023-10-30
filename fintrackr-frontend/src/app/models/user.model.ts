@@ -1,7 +1,7 @@
 import { Expense } from "./expense.model";
 
 export class User {
-    _id: any;
+    _id?: any;
     username: string;
     password: string;
     balance: number;

@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   newExpenseDescription: string = '';
   newExpenseAmount: number = 0;
   newExpenseDate: Date = new Date();
+  invalidAmount: boolean = false;
 
   constructor(private http: HttpClient, private userService: UserService) { }
 
@@ -40,6 +41,13 @@ export class HomeComponent implements OnInit {
   }
 
   onAddExpense(): void {
+    this.invalidAmount = false;
+
+    if (this.newExpenseAmount <= 0 || this.newExpenseAmount > this.user.balance) {
+      this.invalidAmount = true;
+      return;
+    }
+
     const expenseData = {
       description: this.newExpenseDescription,
       amount: this.newExpenseAmount,
@@ -53,6 +61,7 @@ export class HomeComponent implements OnInit {
       console.error('Erreur lors de l\'ajout de la dépense:', error);
     });
   }
+
 
   onExpenseDeleted(): void {
     this.fetchUserData();

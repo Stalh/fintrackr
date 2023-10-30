@@ -14,6 +14,7 @@ export class ExpenseComponent {
   editedDescription: string = '';
   editedAmount: number = 0;
   @Output() expenseUpdated = new EventEmitter<void>();
+  invalidAmount: boolean = false;
 
 
   constructor(private http: HttpClient) { }
@@ -25,6 +26,13 @@ export class ExpenseComponent {
   }
 
   onSubmitEdit() {
+    this.invalidAmount = false;
+
+    if (this.editedAmount <= 0) {
+      this.invalidAmount = true;
+      return;
+    }
+
     const updatedData = {
       description: this.editedDescription,
       amount: this.editedAmount
@@ -33,6 +41,7 @@ export class ExpenseComponent {
     this.updateExpense(updatedData);
     this.editing = false;
   }
+
 
   updateExpense(data: any) {
     const apiUrl = 'http://localhost:3000';

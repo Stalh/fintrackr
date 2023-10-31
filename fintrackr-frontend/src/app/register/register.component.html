@@ -1,65 +1,60 @@
-<div class="h-screen flex bg-gray-100">
-    <div class="flex-1 flex justify-center items-center">
-      <div class="max-w-md w-full px-8 py-6 bg-white rounded shadow-md">
-        <h2 class="text-2xl font-bold mb-5 text-gray-900">Inscription</h2>
-  
-        <form [formGroup]="userForm" (ngSubmit)="register()">
-          <div class="mb-4">
-            <label for="username" class="font-medium text-gray-600 block mb-2">Nom d'utilisateur</label>
-            <input formControlName="username" id="username"
-              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
-            <small style="color: red;" *ngIf="userForm.get('username')!.hasError('required') && userForm.get('username')!.touched">
-              Le nom d'utilisateur est obligatoire.
-            </small>
-          </div>
-  
-          <div class="mb-4">
-            <label for="password" class="font-medium text-gray-600 block mb-2">Mot de passe</label>
-            <input type="password" formControlName="password" id="password"
-              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
-          
-            <small *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched" class="text-red-500">
-              Le mot de passe est obligatoire.
-            </small>
-          
-            <small *ngIf="userForm.get('password')?.hasError('pattern') && userForm.get('password')?.touched" class="text-red-500">
-              Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 caractère spécial.
-            </small>
-          </div>
-          
-  
-          <div class="mb-4">
-            <label for="confirmPassword" class="font-medium text-gray-600 block mb-2">Confirmer le mot de passe</label>
-            <input type="password" formControlName="confirmPassword" id="confirmPassword"
-              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
-            <small style="color: red;" *ngIf="userForm.get('confirmPassword')!.hasError('required')  && userForm.get('confirmPassword')!.touched">
-              La confirmation du mot de passe est obligatoire.
-            </small>
-            <small style="color: red;" *ngIf="!checkPWD() && userForm.get('confirmPassword')!.touched">
-              Les mots de passe ne correspondent pas.
-            </small>
-          </div>
-  
-          <div class="mb-4">
-            <label for="balance" class="font-medium text-gray-600 block mb-2">Balance</label>
-            <input type="number" formControlName="balance" id="balance"
-              class="border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-blue-500" required>
-            <small style="color: red;" *ngIf="userForm.get('balance')!.hasError('required') && userForm.get('balance')!.touched">
-              La balance est obligatoire.
-            </small>
-          </div>    
-  
-          <button type="submit"
-            [disabled]="userForm.invalid"
-            class="w-full bg-blue-500 text-white rounded py-2 px-3 hover:bg-blue-600 focus:outline-none">
-            S'inscrire
-          </button>
-        </form>
+<div class="h-screen flex bg-old_lace-500">
+  <div class="flex-1 flex flex-col justify-center items-center px-20 space-y-10">
+    <h2 class="text-5xl font-extrabold mb-10 text-midnight_green-500">Inscription</h2>
+    <form [formGroup]="userForm" (ngSubmit)="register()" class="w-full max-w-lg">
+      <div class="mb-8 relative">
+        <label for="username" class="block text-midnight_green-500 text-lg mb-2">Nom d'utilisateur</label>
+        <input formControlName="username" id="username" placeholder="Nom d'utilisateur"
+          class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+          required>
+        <small class="text-red-600"
+          *ngIf="userForm.get('username')!.hasError('required') && userForm.get('username')!.touched">
+          Le nom d'utilisateur est obligatoire.
+        </small>
       </div>
-    </div>
-  
-    <div class="hidden lg:block relative w-1/4">
-      <img class="absolute inset-0 w-full h-full object-contain" src="../../assets/login.png" alt="Login Image">
-    </div>
+      <div class="mb-8 relative">
+        <label for="password" class="block text-midnight_green-500 text-lg mb-2">Mot de passe</label>
+        <input type="password" formControlName="password" id="password" placeholder="Mot de passe"
+          class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+          required>
+        <small class="text-red-600"
+          *ngIf="userForm.get('password')?.hasError('required') && userForm.get('password')?.touched">
+          Le mot de passe est obligatoire.
+        </small>
+        <small class="text-red-600"
+          *ngIf="userForm.get('password')?.hasError('pattern') && userForm.get('password')?.touched">
+          Le mot de passe doit contenir au moins 1 majuscule, 1 minuscule, 1 caractère spécial.
+        </small>
+      </div>
+      <div class="mb-8 relative">
+        <label for="confirmPassword" class="block text-midnight_green-500 text-lg mb-2">Confirmer le mot de
+          passe</label>
+        <input type="password" formControlName="confirmPassword" id="confirmPassword"
+          placeholder="Confirmer le mot de passe"
+          class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+          required>
+        <small class="text-red-600"
+          *ngIf="userForm.get('confirmPassword')!.hasError('required')  && userForm.get('confirmPassword')!.touched">
+          La confirmation du mot de passe est obligatoire.
+        </small>
+        <small class="text-red-600" *ngIf="!checkPWD() && userForm.get('confirmPassword')!.touched">
+          Les mots de passe ne correspondent pas.
+        </small>
+      </div>
+      <div class="mb-8 relative">
+        <label for="balance" class="block text-midnight_green-500 text-lg mb-2">Balance</label>
+        <input type="number" formControlName="balance" id="balance" placeholder="Balance"
+          class="border-b-2 border-white w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-zomp-500 bg-old_lace-500"
+          required>
+        <small class="text-red-600"
+          *ngIf="userForm.get('balance')!.hasError('required') && userForm.get('balance')!.touched">
+          La balance est obligatoire.
+        </small>
+      </div>
+      <button type="submit" [disabled]="userForm.invalid"
+        class="w-full bg-zomp-500 text-white rounded-xl py-3 px-4 hover:bg-zomp-600 focus:outline-none transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105">
+        S'inscrire
+      </button>
+    </form>
   </div>
-  
+</div>

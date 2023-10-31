@@ -1,14 +1,15 @@
-<div *ngIf="!editing" class="bg-white p-4 rounded-md shadow border flex justify-between items-center">
+<div *ngIf="!editing"
+    class="p-4 rounded-md shadow-md flex justify-between items-center bg-old_lace border border-midnight_green-300">
     <div>
-        <div class="text-sm text-gray-600">{{ expense.date | date: 'shortDate' }}</div>
-        <div class="text-lg font-semibold">{{ expense.amount | currency }}</div>
-        <div class="text-gray-500">{{ expense.description }}</div>
+        <div class="text-sm text-midnight_green-500">{{ expense.date | date: 'shortDate' }}</div>
+        <div class="text-lg font-semibold text-midnight_green-500">{{ expense.amount | currency }}</div>
+        <div class="text-midnight_green-500">{{ expense.description }}</div>
     </div>
     <div class="space-x-2">
         <!-- Icône pour modifier -->
         <button (click)="onEdit()">
-            <svg class="h-5 w-5 text-gray-500 hover:text-blue-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="h-5 w-5 text-midnight_green-500 hover:text-zomp-500 cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                     d="M15.232 5.232l3.536 3.536m-2.036-5.879a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L15.732 3.343z">
                 </path>
@@ -16,8 +17,8 @@
         </button>
         <!-- Icône pour supprimer -->
         <button (click)="deleteExpense()">
-            <svg class="h-5 w-5 text-gray-500 hover:text-red-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg"
-                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg class="h-5 w-5 text-midnight_green-500 hover:text-red-600 cursor-pointer"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
                 </path>
@@ -26,18 +27,27 @@
     </div>
 </div>
 
-<div *ngIf="editing" class="bg-white p-4 rounded-md shadow border flex flex-col space-y-4">
+<div *ngIf="editing"
+    class="p-4 rounded-md shadow-md flex flex-col space-y-4 bg-old_lace border border-midnight_green-300">
     <div>
-        <label class="block text-sm font-medium text-gray-700">Description</label>
-        <input [(ngModel)]="editedDescription" class="mt-1 p-2 w-full border rounded-md">
+        <label class="block text-sm font-medium text-midnight_green-500">Description</label>
+        <input [(ngModel)]="editedDescription"
+            class="mt-1 p-2 w-full border border-midnight_green-300 rounded-md text-midnight_green-500 focus:outline-none focus:border-zomp-500">
     </div>
     <div>
-        <label class="block text-sm font-medium text-gray-700">Montant</label>
-        <input [(ngModel)]="editedAmount" type="number" class="mt-1 p-2 w-full border rounded-md">
+        <label class="block text-sm font-medium text-midnight_green-500">Montant</label>
+        <input [(ngModel)]="editedAmount" type="number"
+            class="mt-1 p-2 w-full border border-midnight_green-300 rounded-md text-midnight_green-500 focus:outline-none focus:border-zomp-500">
     </div>
     <div class="flex space-x-4">
-        <button (click)="onSubmitEdit()" class="bg-blue-600 text-white p-2 rounded-md">Confirmer</button>
-        <button (click)="editing=false" class="bg-red-600 text-white p-2 rounded-md">Annuler</button>
+        <button (click)="onSubmitEdit()"
+            class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-4 py-2 rounded-md font-bold transition duration-300 ease-in-out shadow-md">
+            Confirmer
+        </button>
+        <button (click)="editing=false"
+            class="bg-ash_gray-500 hover:bg-ash_gray-600 text-old_lace px-4 py-2 rounded-md font-bold transition duration-300 ease-in-out shadow-md">
+            Annuler
+        </button>
         <div *ngIf="invalidAmount" class="mb-4 text-red-600">
             Montant invalide. Veuillez entrer un montant positif.
         </div>

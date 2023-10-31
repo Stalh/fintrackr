@@ -1,6 +1,13 @@
-<h2 mat-dialog-title>Déconnexion</h2>
-<mat-dialog-content>Êtes-vous sûr de vouloir vous déconnecter ?</mat-dialog-content>
-<mat-dialog-actions>
-    <button mat-button (click)="onCancel()">Annuler</button>
-    <button mat-button (click)="onConfirm()">Oui, me déconnecter</button>
-</mat-dialog-actions>
+<div class="bg-old_lace rounded-lg p-6 shadow-lg transform transition-all ease-in-out duration-300">
+    <h2 mat-dialog-title class="text-midnight_green-500 text-2xl mb-4">Déconnexion</h2>
+    <mat-dialog-content class="text-midnight_green-500 mb-6">Êtes-vous sûr de vouloir vous déconnecter
+        ?</mat-dialog-content>
+    <mat-dialog-actions class="flex justify-end space-x-4">
+        <button mat-button
+            class="text-midnight_green-500 hover:text-midnight_green-700 border border-midnight_green-500 px-4 py-2 rounded transition duration-300 ease-in-out"
+            (click)="onCancel()">Annuler</button>
+        <button mat-button
+            class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-4 py-2 rounded transition duration-300 ease-in-out"
+            (click)="onConfirm()">Oui, me déconnecter</button>
+    </mat-dialog-actions>
+</div>

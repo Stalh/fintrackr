@@ -1,24 +1,28 @@
-<div *ngIf="user" class="bg-old_lace p-6 rounded-md shadow-md text-midnight_green-500 space-y-6">
+<div *ngIf="user" class="bg-old_lace p-6 rounded-md text-midnight_green-500 space-y-6">
 
     <!-- En-tête avec le nom d'utilisateur et le solde -->
-    <div class="flex justify-between items-center mb-4 space-x-4">
-        <h2 class="text-3xl font-bold">Bienvenue {{ user.username }} !</h2>
-        <div class="balance text-lg font-semibold px-4 py-2 bg-old_lace text-midnight_green-500 rounded-full">
-            Solde: <span>{{ user.balance | currency }}</span>
+    <div class="flex justify-center items-center mt-12 mb-8 space-x-8">
+        <h2 class="text-base font-bold">Bienvenue, {{ user.username }} 👋🏼</h2>
+        <div
+            class="balance flex items-center justify-center bg-old_lace text-midnight_green-500 rounded-full shadow-md border border-zomp-500 w-32 h-32">
+            <span class="text-2xl font-semibold">{{ user.balance | currency }}</span>
         </div>
     </div>
 
-    <!-- Bouton pour afficher la modal -->
-    <button (click)="showModal = true"
-        class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
-        Ajouter une dépense
-    </button>
 
     <!-- Liste des dépenses -->
-    <h3 class="text-xl mb-3">Vos dépenses :</h3>
-    <div *ngFor="let expense of user.expenses" class="mb-4">
-        <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
-            (expenseUpdated)="onExpenseUpdated()"></app-expense>
+    <div class="flex justify-between items-center">
+        <h3 class="text-xl mb-3">Vos dépenses :</h3>
+        <button (click)="showModal = true"
+            class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
+            Ajouter une dépense
+        </button>
+    </div>
+    <div *ngFor="let expense of user.expenses" class="mb-4 flex justify-center">
+        <div class="w-3/4">
+            <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
+                (expenseUpdated)="onExpenseUpdated()"></app-expense>
+        </div>
     </div>
 
     <!-- Modal pour ajouter une dépense -->

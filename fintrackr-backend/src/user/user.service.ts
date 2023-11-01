@@ -12,6 +12,7 @@ import { UserDao } from './dao/user.dao';
 import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateExpenseDto } from './dto/update-depense';
 import { UpdateUserDto } from './dto/update-user';
+import { Expense } from './schemas/expense';
 
 @Injectable()
 export class UserService {
@@ -101,6 +102,10 @@ export class UserService {
   async findByUsername(username: string): Promise<UserEntity> {
     const user = await this._userDao.findByUsername(username).toPromise();
     return user ? new UserEntity(user) : null;
+  }
+  
+  async getUserExpensesByMonth(userId: string, month: number, year: number): Promise<Expense[]> {
+    return this._userDao.getUserExpensesByMonth(userId, month, year);
   }
 
 }

@@ -8,6 +8,8 @@ import { CreateExpenseDto } from '../dto/create-expense';
 import { UpdateUserDto } from '../dto/update-user';
 import { UpdateExpenseDto } from '../dto/update-depense';
 import { UserEntity } from '../entities/user.entity';
+import { ExpenseEntity } from '../entities/expense.entity';
+import { Expense } from '../schemas/expense';
 
 @Injectable()
 export class UserDao {
@@ -46,11 +48,8 @@ export class UserDao {
       mergeMap(user => {
         if (!user) throw new NotFoundException(`User with id '${userId}' not found`);
 
-        // Deduct the amount from the user's balance
         const newBalance = user.balance - expense.amount;
-
-        // Check if the new balance is below 0
-        if (newBalance < 0) throw new UnprocessableEntityException("Insufficient balance to make this expense.");
+         if (newBalance < 0) throw new UnprocessableEntityException("Insufficient balance to make this expense.");
 
         user.balance = newBalance;
 
@@ -120,8 +119,22 @@ export class UserDao {
       map((user) => (user ? user.toObject() : null))
     );
   }
+  async getUserExpensesByMonth(userId: string, month: number, year: number): Promise<Expense[]> {
+    const user = await this._userModel
+      .findById(userId)
+      .populate('expenses'); 
 
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
 
+    const filteredExpenses = user.expenses.filter((expense) => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getMonth() + 1 === month && expenseDate.getFullYear() === year;
+    });
+
+    return filteredExpenses;
+  }
 
 
 }

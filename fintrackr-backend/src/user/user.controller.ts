@@ -15,6 +15,7 @@ import { CreateExpenseDto } from './dto/create-expense';
 import { UpdateUserDto } from './dto/update-user';
 import { UpdateExpenseDto } from './dto/update-depense';
 import { Public, IS_PUBLIC_KEY } from 'src/auth/decorator/public.decorator';
+import { Expense } from './schemas/expense';
 
 @Controller('users')
 export class UserController {
@@ -74,5 +75,13 @@ export class UserController {
   }
 
 
+  @Get(':userId/expenses/:year/:month')
+  async getUserExpensesByMonth(
+    @Param('userId') userId: string,
+    @Param('year') year: number,
+    @Param('month') month: number,
+  ): Promise<Expense[]> {
+    return this.userService.getUserExpensesByMonth(userId, month, year);
+  }
 
 }

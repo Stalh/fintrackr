@@ -1,8 +1,8 @@
-<div *ngIf="user" class="bg-old_lace p-6 rounded-md text-midnight_green-500 space-y-6">
+<div *ngIf="user" class="bg-old_lace p-6 rounded-md text-midnight_green-500">
 
     <!-- En-tête avec le nom d'utilisateur et le solde -->
-    <div class="flex justify-center items-center mt-12 mb-8 space-x-8">
-        <h2 class="text-base font-bold">Bienvenue, {{ user.username }} 👋🏼</h2>
+    <div class="flex justify-center items-center mt-12 mb-12 space-x-8">
+        <h2 class="text-2xl font-bold">Bienvenue, {{ user.username }} 👋🏼</h2>
         <div
             class="flex items-center justify-between bg-old_lace text-midnight_green-500 rounded-full shadow-md border border-zomp-500 w-40 h-40 p-3">
             <span class="text-2xl font-semibold">{{ user?.balance | currency }}</span>
@@ -12,6 +12,24 @@
             </button>
         </div>
     </div>
+
+    <div class="mb-20 p-4 rounded-lg shadow-lg border border-zomp-200 bg-old_lace">
+        <h3 class="text-xl font-semibold mb-3 text-midnight_green-500 flex items-center">
+            <i class="fas fa-lightbulb mr-2"></i> <!-- Icone d'une ampoule pour le titre -->
+            Conseils Financiers
+        </h3>
+        <div class="relative overflow-hidden" style="min-height: 150px;">
+            <div class="advice-item absolute top-0 left-0 w-full flex items-center justify-center p-3"
+                *ngIf="financialAdvices.length > 0">
+                <div class="text-center text-midnight_green-500 p-3 border-zomp-300">
+                    <i class="{{ getIconClass(financialAdvices[currentAdviceIndex].type) }} text-3xl"></i>
+                    <h4 class="font-semibold mb-2">{{ financialAdvices[currentAdviceIndex].title }}</h4>
+                    <p>{{ financialAdvices[currentAdviceIndex].content }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
     <div *ngIf="showAddBalanceModal"
@@ -57,8 +75,11 @@
 
 
     <!-- Liste des dépenses -->
-    <div class="flex justify-between items-center">
-        <h3 class="text-xl mb-3">Vos dépenses :</h3>
+    <div class="flex justify-between items-center mb-12">
+        <h3 class="text-xl font-semibold mb-3 text-midnight_green-500 flex items-center my-10">
+            <i class="fas fa-coins mr-2"></i>
+            Vos dépenses :
+        </h3>
         <button (click)="showModal = true"
             class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
             Ajouter une dépense

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { jwtDecode } from 'jwt-decode';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 interface CustomJwtPayload {
   username: string;
@@ -10,7 +12,19 @@ interface CustomJwtPayload {
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: []
+  styleUrls: ['../../styles.css'],
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('1s', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('1s', style({ opacity: 0 })),
+      ]),
+    ]),
+
+  ]
 })
 export class HomeComponent implements OnInit {
   user: any;
@@ -21,12 +35,70 @@ export class HomeComponent implements OnInit {
   showModal: boolean = false;
   showAddBalanceModal: boolean = false;
   addBalanceAmount: number = 0;
+  showAdvice: boolean = false;
+  financialAdvices = [
+    // Conseils d'économie
+    {
+      title: 'Construire un fonds d\'urgence',
+      content: 'Commencez par mettre de côté suffisamment d\'argent pour couvrir au moins 3-6 mois de dépenses en cas d\'imprévu. Cela peut vous aider à éviter d\'emprunter en cas de coup dur.',
+      type: 'saving'
+    },
+    {
+      title: 'Réviser les abonnements',
+      content: 'Passez en revue vos abonnements mensuels et annulez ceux que vous n\'utilisez pas ou peu. Les petites économies peuvent s\'ajouter à de grandes sommes au fil du temps.',
+      type: 'saving'
+    },
+
+    // Conseils d'investissement
+    {
+      title: 'Planifier pour la retraite',
+      content: 'Il n\'est jamais trop tôt pour commencer à épargner pour la retraite. Profitez des comptes de retraite fiscalement avantageux comme les 401(k) ou les IRA.',
+      type: 'investment'
+    },
+    {
+      title: 'Comprendre le risque',
+      content: 'Avant d\'investir, évaluez votre tolérance au risque. Investir toujours dans des actifs qui correspondent à votre niveau de confort et à vos objectifs à long terme.',
+      type: 'investment'
+    },
+
+    // Conseils de budget
+    {
+      title: 'Suivi des dépenses',
+      content: 'Utilisez des applications de gestion de finances personnelles pour suivre où va votre argent. Cela peut vous aider à identifier et à réduire les dépenses inutiles.',
+      type: 'budgeting'
+    },
+    {
+      title: 'Fixer des objectifs financiers',
+      content: 'Avoir des objectifs financiers clairs peut vous motiver à gérer votre argent de manière plus responsable. Définissez des objectifs à court et à long terme et élaborez un plan pour les atteindre.',
+      type: 'budgeting'
+    }
+  ];
 
 
-  constructor(private http: HttpClient, private userService: UserService) { }
+  currentAdviceIndex = 0;
+
+  constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
   ngOnInit(): void {
-    this.fetchUserData();
+    const username = localStorage.getItem('username');
+    if (!username) {
+      this.router.navigate(['/login']);
+    } else {
+      this.fetchUserData();
+    }
+    this.cycleAdvices();
+  }
+
+  cycleAdvices(): void {
+    setInterval(async () => {
+      await Promise.resolve();
+      this.currentAdviceIndex = (this.currentAdviceIndex + 1) % this.financialAdvices.length;
+    }, 5000);
+  }
+
+
+  isAdviceVisible(index: number): boolean {
+    return index === this.currentAdviceIndex;
   }
 
   fetchUserData(): void {
@@ -41,6 +113,16 @@ export class HomeComponent implements OnInit {
     } else {
       console.warn('No username found in localStorage.');
     }
+  }
+
+  getIconClass(type: string): string {
+    const iconMap: { [key: string]: string } = {
+      'saving': 'fas fa-piggy-bank',
+      'investment': 'fas fa-chart-line',
+      'budgeting': 'fas fa-wallet',
+    };
+
+    return iconMap[type] || 'fas fa-info-circle';
   }
 
   onAddBalance(): void {

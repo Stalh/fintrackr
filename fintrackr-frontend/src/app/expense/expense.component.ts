@@ -58,7 +58,7 @@ export class ExpenseComponent {
 
   deleteExpense() {
     const apiUrl = 'http://localhost:3000';
-    this.http.delete(`${apiUrl}/users/${this.userId}/update_expense/${this.expense._id}`)
+    this.http.delete(`${apiUrl}/users/${this.userId}/delete_expense/${this.expense._id}`)
       .subscribe(() => {
         this.expenseDeleted.emit();
       }, error => {

@@ -27,7 +27,7 @@ export class User {
     type: String,
     required: true,
   })
-  password: string; // Ceci sera le mot de passe haché
+  password: string;
 
   @Prop({
     type: Number,
@@ -36,7 +36,7 @@ export class User {
   balance: number;
 
   @Prop({
-    type: [ExpenseSchema], // Imbriquer le schéma de dépenses ici
+    type: [ExpenseSchema],
     default: [],
   })
   expenses: Expense[];

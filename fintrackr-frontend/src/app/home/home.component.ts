@@ -73,9 +73,9 @@ export class HomeComponent implements OnInit {
       type: 'budgeting'
     }
   ];
-
-
+  polarAreaChartData: any;
   currentAdviceIndex = 0;
+  chartOptions: any;
 
   constructor(private http: HttpClient, private userService: UserService, private router: Router) { }
 
@@ -87,6 +87,27 @@ export class HomeComponent implements OnInit {
       this.fetchUserData();
     }
     this.cycleAdvices();
+    this.setupChartOptions();
+  }
+
+  setupChartOptions(): void {
+    this.chartOptions = {
+      scales: {
+        r: {
+          angleLines: {
+            display: false
+          },
+          ticks: {
+            display: false
+          }
+        }
+      },
+      plugins: {
+        legend: {
+          display: true
+        }
+      }
+    };
   }
 
   cycleAdvices(): void {
@@ -107,12 +128,56 @@ export class HomeComponent implements OnInit {
       const apiUrl = 'http://localhost:3000';
       this.http.get(`${apiUrl}/users/${username}`).subscribe(data => {
         this.user = data;
+        this.processExpensesForChart(); // Traitement des dépenses pour le graphique
       }, error => {
         console.error('Erreur lors de la récupération des informations utilisateur :', error);
       });
     } else {
       console.warn('No username found in localStorage.');
     }
+  }
+
+  processExpensesForChart(): void {
+    const ranges = {
+      '0-10': 0,
+      '10-50': 0,
+      '50-100': 0,
+      '100+': 0
+    };
+
+    if (this.user && this.user.expenses) {
+      this.user.expenses.forEach((expense: { amount: any; }) => {
+        const amount = expense.amount;
+        if (amount <= 10) ranges['0-10']++;
+        else if (amount <= 50) ranges['10-50']++;
+        else if (amount <= 100) ranges['50-100']++;
+        else ranges['100+']++;
+      });
+    }
+
+    this.polarAreaChartData = {
+      datasets: [{
+        data: [
+          ranges['0-10'],
+          ranges['10-50'],
+          ranges['50-100'],
+          ranges['100+']
+        ],
+        backgroundColor: [
+          "#FF6384",
+          "#4BC0C0",
+          "#FFCE56",
+          "#E7E9ED"
+        ],
+        label: 'Dépenses'
+      }],
+      labels: [
+        '0 - 10€',
+        '10 - 50€',
+        '50 - 100€',
+        '100€ et plus'
+      ]
+    };
   }
 
   getIconClass(type: string): string {

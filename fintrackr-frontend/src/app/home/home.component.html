@@ -75,20 +75,28 @@
 
 
     <!-- Liste des dépenses -->
-    <div class="flex justify-between items-center mb-12">
-        <h3 class="text-xl font-semibold mb-3 text-midnight_green-500 flex items-center my-10">
-            <i class="fas fa-coins mr-2"></i>
-            Vos dépenses :
-        </h3>
-        <button (click)="showModal = true"
-            class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
-            Ajouter une dépense
-        </button>
-    </div>
-    <div *ngFor="let expense of user.expenses" class="mb-4 flex justify-center">
-        <div class="w-3/4">
-            <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
-                (expenseUpdated)="onExpenseUpdated()"></app-expense>
+    <div>
+        <div class="flex justify-between items-center mb-12">
+            <h3 class="text-xl font-semibold mb-3 text-midnight_green-500 flex items-center my-10">
+                <i class="fas fa-coins mr-2"></i>
+                Vos dépenses :
+            </h3>
+            <button (click)="showModal = true"
+                class="bg-zomp-500 hover:bg-zomp-600 text-old_lace px-6 py-3 rounded-lg font-bold text-xl transition duration-300 ease-in-out shadow-md">
+                Ajouter une dépense
+            </button>
+        </div>
+        <div *ngFor="let expense of user.expenses" class="mb-4 flex justify-center">
+            <div class="w-3/4">
+                <app-expense [expense]="expense" [userId]="user._id" (expenseDeleted)="onExpenseDeleted()"
+                    (expenseUpdated)="onExpenseUpdated()"></app-expense>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <div class="w-full max-w-xs">
+                <p-chart type="polarArea" [data]="polarAreaChartData" [options]="chartOptions"></p-chart>
+
+            </div>
         </div>
     </div>
 

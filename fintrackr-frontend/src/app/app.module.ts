@@ -12,10 +12,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpClientModule } from '@angular/common/http';
 import { ExpenseComponent } from './expense/expense.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LogoutDialogComponent } from './logout-dialog/logout-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -25,12 +26,13 @@ import { ReactiveFormsModule } from '@angular/forms';
     NavbarComponent,
     HomeComponent,
     ExpenseComponent,
-    
+
     LogoutDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    ChartModule,
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,

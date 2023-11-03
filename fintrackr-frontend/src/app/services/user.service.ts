@@ -22,7 +22,12 @@ export class UserService {
   refreshUserData(username: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/users/${username}`);
   }
-  addUser(user : User): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/users/`,user);
+  addUser(user: User): Observable<User> {
+    return this.http.post<User>(`${this.apiUrl}/users/`, user);
   }
+
+  addBalance(userId: string, amount: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/users/${userId}/add_balance`, { amount });
+  }
+
 }

@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit {
   newExpenseDate: Date = new Date();
   invalidAmount: boolean = false;
   showModal: boolean = false;
+  showAddBalanceModal: boolean = false;
+  addBalanceAmount: number = 0;
 
 
   constructor(private http: HttpClient, private userService: UserService) { }
@@ -38,6 +40,15 @@ export class HomeComponent implements OnInit {
       });
     } else {
       console.warn('No username found in localStorage.');
+    }
+  }
+
+  onAddBalance(): void {
+    if (this.addBalanceAmount > 0) {
+      this.userService.addBalance(this.user._id, this.addBalanceAmount).subscribe(() => {
+        this.fetchUserData(); // Pour mettre à jour la balance affichée
+        this.showAddBalanceModal = false;
+      });
     }
   }
 

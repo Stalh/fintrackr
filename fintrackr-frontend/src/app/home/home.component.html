@@ -4,10 +4,56 @@
     <div class="flex justify-center items-center mt-12 mb-8 space-x-8">
         <h2 class="text-base font-bold">Bienvenue, {{ user.username }} 👋🏼</h2>
         <div
-            class="balance flex items-center justify-center bg-old_lace text-midnight_green-500 rounded-full shadow-md border border-zomp-500 w-32 h-32">
-            <span class="text-2xl font-semibold">{{ user.balance | currency }}</span>
+            class="flex items-center justify-between bg-old_lace text-midnight_green-500 rounded-full shadow-md border border-zomp-500 w-40 h-40 p-3">
+            <span class="text-2xl font-semibold">{{ user?.balance | currency }}</span>
+            <button (click)="showAddBalanceModal = true"
+                class="bg-zomp-500 hover:bg-zomp-600 text-old_lace p-1 rounded-full font-bold transition duration-300 ease-in-out shadow-md">
+                <i class="fas fa-plus-circle text-xl"></i>
+            </button>
         </div>
     </div>
+
+
+    <div *ngIf="showAddBalanceModal"
+        class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center px-4 z-50">
+        <div class="bg-midnight_green-300 rounded-lg shadow-xl p-6 mx-auto max-w-lg w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-old_lace">Ajouter de l'argent</h3>
+                <button (click)="showAddBalanceModal = false" class="text-old_lace hover:text-zomp-500 rounded">
+                    <i class="fas fa-times-circle text-2xl"></i>
+                </button>
+            </div>
+            <form class="space-y-4" (ngSubmit)="onAddBalance()" #addBalanceForm="ngForm">
+                <div>
+                    <label for="modalAddBalanceAmount" class="block text-sm font-medium text-old_lace">
+                        Montant
+                    </label>
+                    <input type="number" [(ngModel)]="addBalanceAmount" id="modalAddBalanceAmount"
+                        name="addBalanceAmount" placeholder="Montant à ajouter" min="0.01"
+                        pattern="^[0-9]+(\.[0-9]{1,2})?$" required
+                        class="mt-1 block w-full px-3 py-2 bg-midnight_green-200 border border-zomp-500 rounded-md shadow-sm placeholder-old_lace text-old_lace focus:outline-none focus:border-zomp-600"
+                        #amountInput="ngModel">
+                    <div *ngIf="amountInput.invalid && (amountInput.dirty || amountInput.touched)"
+                        class="text-red-500 text-sm mt-2">
+                        <p *ngIf="amountInput.errors?.['required']">Un montant est requis.</p>
+                        <p *ngIf="amountInput.errors?.['pattern']">Entrez un nombre valide (ex: 100 ou 100.50).</p>
+                        <p *ngIf="amountInput.errors?.['min']">Le montant doit être positif.</p>
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" (click)="showAddBalanceModal = false"
+                        class="py-2 px-4 border border-ash_gray-500 text-sm font-medium rounded-md text-old_lace bg-ash_gray-500 hover:bg-ash_gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zomp-500">
+                        Annuler
+                    </button>
+                    <button type="submit" [disabled]="addBalanceForm.invalid"
+                        class="ml-3 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-old_lace bg-zomp-500 hover:bg-zomp-600 disabled:bg-zomp-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zomp-500">
+                        Ajouter
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 
 
     <!-- Liste des dépenses -->

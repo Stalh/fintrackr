@@ -84,4 +84,13 @@ export class UserController {
     return this.userService.getUserExpensesByMonth(userId, month, year);
   }
 
+  @Put(':id/add_balance')
+  async addBalance(
+    @Param('id') userId: string,
+    @Body('amount') amount: number,
+  ): Promise<UserEntity> {
+    return this.userService.addBalance(userId, amount);
+  }
+
+
 }

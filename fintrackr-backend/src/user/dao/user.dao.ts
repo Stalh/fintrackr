@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { from, map, mergeMap, Observable } from 'rxjs';
@@ -49,7 +49,7 @@ export class UserDao {
         if (!user) throw new NotFoundException(`User with id '${userId}' not found`);
 
         const newBalance = user.balance - expense.amount;
-         if (newBalance < 0) throw new UnprocessableEntityException("Insufficient balance to make this expense.");
+        if (newBalance < 0) throw new UnprocessableEntityException("Insufficient balance to make this expense.");
 
         user.balance = newBalance;
 
@@ -122,7 +122,7 @@ export class UserDao {
   async getUserExpensesByMonth(userId: string, month: number, year: number): Promise<Expense[]> {
     const user = await this._userModel
       .findById(userId)
-      .populate('expenses'); 
+      .populate('expenses');
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -135,6 +135,23 @@ export class UserDao {
 
     return filteredExpenses;
   }
+
+  async addBalance(userId: string, amount: number): Promise<UserEntity> {
+    const user = await this._userModel.findById(userId).lean();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (amount <= 0) {
+      throw new BadRequestException('Invalid amount');
+    }
+    user.balance += amount;
+
+    // Lean c'est un convertisseur de mongoose qui permet de convertir un objet mongoose en objet javascript (de ce que j'ai compris)
+    const updatedUser = await this._userModel.findByIdAndUpdate(userId, { balance: user.balance }, { new: true }).lean();
+
+    return new UserEntity(updatedUser);
+  }
+
 
 
 }

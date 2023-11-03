@@ -103,9 +103,14 @@ export class UserService {
     const user = await this._userDao.findByUsername(username).toPromise();
     return user ? new UserEntity(user) : null;
   }
-  
+
   async getUserExpensesByMonth(userId: string, month: number, year: number): Promise<Expense[]> {
     return this._userDao.getUserExpensesByMonth(userId, month, year);
   }
+
+  async addBalance(userId: string, amount: number): Promise<UserEntity> {
+    return this._userDao.addBalance(userId, amount);
+  }
+
 
 }

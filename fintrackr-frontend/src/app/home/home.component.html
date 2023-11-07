@@ -1,13 +1,17 @@
 <div *ngIf="user" class="bg-old_lace p-6 rounded-md text-midnight_green-500">
 
-    <!-- En-tête avec le nom d'utilisateur et le solde -->
-    <div class="flex justify-center items-center mt-12 mb-12 space-x-8">
-        <h2 class="text-2xl font-bold">Bienvenue, {{ user.username }} 👋🏼</h2>
-        <div
-            class="flex items-center justify-between bg-old_lace text-midnight_green-500 rounded-full shadow-md border border-zomp-500 w-40 h-40 p-3">
-            <span class="text-2xl font-semibold">{{ user?.balance | currency }}</span>
+    <div class="flex flex-col items-center justify-center mt-12 mb-12" @fade>
+        <h2 class="text-2xl font-bold mb-4">Bienvenue, {{ user.username }} 👋🏼</h2>
+        <div class="relative">
+            <div
+                class="bg-old_lace text-midnight_green-500 rounded-full md:rounded-lg lg:rounded-xl border border-zomp-500 flex items-center justify-center p-3 overflow-hidden w-40 h-40 md:w-52 md:h-52 lg:w-64 lg:h-64">
+                <span class="text-center text-xs md:text-base lg:text-lg font-semibold"
+                    :class="{'text-xs': balanceLength > 10, 'text-sm': balanceLength <= 10 && balanceLength > 8, 'text-base': balanceLength <= 8}">
+                    {{ user?.balance | currency }}
+                </span>
+            </div>
             <button (click)="showAddBalanceModal = true"
-                class="bg-zomp-500 hover:bg-zomp-600 text-old_lace p-1 rounded-full font-bold transition duration-300 ease-in-out shadow-md">
+                class="bg-zomp-500 hover:bg-zomp-600 text-old_lace p-2 rounded-full font-bold transition duration-300 ease-in-out shadow-md absolute bottom-0 right-0 mb-2 mr-2 transform translate-x-1/2 translate-y-1/2">
                 <i class="fas fa-plus-circle text-xl"></i>
             </button>
         </div>

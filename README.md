@@ -19,7 +19,7 @@ Fintrackr est une application moderne de suivi des finances personnelles, conçu
 ## 🚀 Installation et mise en route
 
 1. Clonez le dépôt 
-   git clone lien_vers_votre_dépôt.git
+   git clone https://github.com/Stalh/fintrackr.git
 
 2. Installer les dépendances 
    cd fintrackr-backend
@@ -36,3 +36,7 @@ Backend:
 
 Frontend:
    ng serve
+
+4. Peuplement de la BDD
+
+Une fois le projet mis en place vous pouvez utiliser le script "peuplement.js" pour peupler la bdd si vous voulez des exemples

@@ -110,6 +110,17 @@ export class HomeComponent implements OnInit {
     };
   }
 
+  getBalanceTextClass(balance: number): string {
+    const balanceLength = balance.toString().length;
+    if (balanceLength > 10) {
+      return 'text-xs';
+    } else if (balanceLength > 8) {
+      return 'text-sm';
+    } else {
+      return 'text-lg';
+    }
+  }
+
   cycleAdvices(): void {
     setInterval(async () => {
       await Promise.resolve();

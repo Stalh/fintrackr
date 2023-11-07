@@ -1,42 +1,91 @@
 # Fintrackr
 
-Fintrackr est une application moderne de suivi des finances personnelles, conçue pour aider les utilisateurs à gérer efficacement leurs dépenses et leurs revenus.
+Fintrackr est une application de suivi des finances personnelles conçue pour offrir une expérience utilisateur moderne et intuitive. Elle permet aux utilisateurs de suivre leurs dépenses et revenus avec facilité.
 
 ## 🛠 Technologies utilisées
 
 - **Backend** : 
   [<img src="https://nestjs.com/img/logo_text.svg" width="100"/>](https://nestjs.com/)
-  - [NestJS](https://nestjs.com/): Un framework Node.js progressif pour construire des applications server-side efficaces et évolutives.
+  - [NestJS](https://nestjs.com/)
 
 - **Frontend** :
   [<img src="https://angular.io/assets/images/logos/angular/angular.svg" width="30"/>](https://angular.io/)
-  - [Angular](https://angular.io/): Un framework de développement d'applications Web avec TypeScript.
+  - [Angular](https://angular.io/)
+  - PrimeNG : Une suite de composants d'interface utilisateur pour Angular.
 
 - **Base de données** :
   [<img src="https://webassets.mongodb.com/_com_assets/cms/MongoDB_Logo_FullColorBlack_RGB-4td3yuxzjs.png" width="100"/>](https://www.mongodb.com/)
-  - [MongoDB](https://www.mongodb.com/): Une base de données NoSQL axée sur les documents.
+  - [MongoDB](https://www.mongodb.com/)
 
 ## 🚀 Installation et mise en route
 
-1. Clonez le dépôt 
-   git clone https://github.com/Stalh/fintrackr.git
+### Installation des dépendances
 
-2. Installer les dépendances 
-   cd fintrackr-backend
-   yarn install
-   cd fintrackr-frontend
-   yarn install
+Ouvrez trois terminaux, un pour le backend, un pour le frontend, et un pour Docker.
 
-3. Lancer l'application
-Créer un .env avec les différentes informations importantes exemple dans default.env
+#### Backend
 
-Backend:
-   Utiliser le docker-compose dans le backend/scripts
-   yarn start:dev
+```
+cd fintrackr-backend
+yarn install
+```
 
-Frontend:
-   ng serve
+#### Frontend
 
-4. Peuplement de la BDD
+```
+cd fintrackr-frontend
+yarn install
+```
 
-Une fois le projet mis en place vous pouvez utiliser le script "peuplement.js" pour peupler la bdd si vous voulez des exemples
+### Configuration de l'environnement
+
+Créez un fichier `.env` à la racine du projet backend en vous basant sur le `default.env` fourni. Remplissez-le avec les informations suivantes :
+
+```
+DB_HOST=localhost
+DB_PORT=27017
+DB_NAME=fintrackr
+JWT_SECRET="YOUR_SECRET_KEY"
+JWT_EXPIRATION_TIME="1h"
+```
+
+### Lancement des services
+
+#### Backend
+
+Utilisez Docker pour démarrer le service de base de données :
+
+```
+cd scripts
+docker-compose up
+```
+
+Puis, démarrez le serveur de développement :
+
+```
+yarn start:dev
+```
+
+#### Frontend
+
+```
+ng serve
+```
+
+
+### Peuplement de la base de données
+
+Utilisez le script `populate.js` pour initialiser la base de données avec des données de test.
+
+
+## 🧪 Utilisateurs de test
+
+Pour tester l'application, utilisez les identifiants suivants :
+
+- **Username** : Sam
+- **Mot de passe** : hashed_password_123
+
+## 🔗 Liens utiles
+
+- **Application** : [http://localhost:4200/login](http://localhost:4200/login)
+- **Swagger API** : [http://localhost:3000/api](http://localhost:3000/api)
